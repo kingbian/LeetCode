@@ -22,6 +22,7 @@ vector<int> smallerThanCurrent(vector<int>& nums){
     return ans; 
 }
 
+// hashmap????
 
 int main(){
 
