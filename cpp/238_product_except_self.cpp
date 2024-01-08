@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-std::vector<int> productExceptSelf(std::vector<int> &nums)
+std::vector<int> productExceptSelf_slow(std::vector<int> &nums)
 {
 
     int size = nums.size();
@@ -34,12 +34,45 @@ std::vector<int> productExceptSelf(std::vector<int> &nums)
     return ans;
 }
 
+/**
+ * optimize to use O(1) extra space
+ */
+std::vector<int> productExceptSelf_fast(std::vector<int> &nums)
+{
+
+    int size = nums.size();
+    std::vector<int> ans(size);
+
+    ans[0] = 1;
+    for (int i = 1; i < size; ++i)
+    {
+        ans[i] = nums[i - 1] * ans[i - 1];
+    }
+
+    int previous = 1;
+    for (int i = size - 2; i >= 0; --i)
+    {
+        previous *= nums[i + 1];
+        ans[i] *= previous;
+    }
+
+    return ans;
+}
+
 int main()
 {
     std::vector<int> nums{1, 2, 3, 4};
-    for (auto &i : productExceptSelf(nums))
+
+    for (auto &i : productExceptSelf_slow(nums))
     {
         std::cout << i << ", ";
     }
-    std::cout << "\n";
+
+    std::cout << "\n\n";
+    for (auto &i : productExceptSelf_fast(nums))
+    {
+        std::cout << i << ", ";
+    }
+    std::cout
+        << "\n";
 }
