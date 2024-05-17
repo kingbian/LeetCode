@@ -10,7 +10,10 @@ struct TreeNode {
   TreeNode(int x, TreeNode *left, TreeNode *right)
       : val(x), left(left), right(right) {}
 };
-
+/*
+ * Time Complexity: O(n); n -> is the size of the array
+ * Space Complexity: O(log n) because array elements are ordered
+ */
 TreeNode *insertNode(std::vector<int> &nums, int left, int right) {
 
   if (left > right)
