@@ -1,4 +1,4 @@
-#include <iostream>
+#include <unordered_set>
 #include <vector>
 // Definition for a binary tree node.
 struct TreeNode {
@@ -14,59 +14,83 @@ struct TreeNode {
 /*
  * Time Complexity: O(n); n -> the number of nodes in the tree
  * Space Complexity: O(n); n-> the size of vector
- * RunTime: 15ms
+ * Run Time: 15ms
  *
  */
-void bstToVector(TreeNode *root, std::vector<int> &nums) {
+
+/*
+ * This helper function recursively iterates over the Tree Node
+ * adding it the vector
+
+
+void bstToVectorInorder(TreeNode *root, std::vector<int> &nums) {
+  // check for the base case
   if (root == nullptr)
     return;
 
-  bstToVector(root->left, nums);
+  // traverse the left sub tree
+  bstToVectorInorder(root->left, nums);
 
+  // add the current node to the vector
   nums.push_back(root->val);
-  bstToVector(root->right, nums);
+
+  // traverse the right sub tree
+  bstToVectorInorder(root->right, nums);
 
   return;
 }
+*/
+/*
+ * This function uses a two pointer approach to find
+ * 2 numbers that add up to the key
 
 bool findTarget(TreeNode *root, int k) {
 
   std::vector<int> nums;
-  bstToVector(root, nums);
-  int left = 0, right = nums.size() - 1;
+  bstToVectorInorder(root, nums);
 
-  while (left < right) {
+  // create the two pointers
+  int start = 0, end = nums.size() - 1;
 
-    if (nums[left] + nums[right] == k)
-      return true;
+  // iterate through until the pointers meet each other
+  while (start < end) {
+    int sum = nums[start] + nums[end];
 
-    if (nums[left] + nums[right] > k) {
-      right--;
-    } else
-      left++;
+    if (sum == k)
+      return true; // found the 2 int's that make the key
+
+    // move the pointers
+    if (sum > k)
+      end--;
+    if (sum < k)
+      start++;
   }
-
   return false;
 }
+ */
 
-int main() {
-  // Creating a BST:
-  //       5
-  //      / \
-  //     3   6
-  //    / \   \
-  //   2   4   7
-  TreeNode *root = new TreeNode(5);
-  root->left = new TreeNode(3);
-  root->right = new TreeNode(6);
-  root->left->left = new TreeNode(2);
-  root->left->right = new TreeNode(4);
-  root->right->right = new TreeNode(7);
+/*
+ * implementing using unordered_set
+ *
+ * Time Complexity: O(n); n -> the number of nodes in the tree
+ * Space Complexity: O(n); n-> the size of vector
+ */
 
-  int k = 20;
+bool getTarget(TreeNode *node, std::unordered_set<int> &set, int key) {
+  if (node == nullptr)
+    return false;
 
-  bool result = findTarget(root, k);
-  std::cout << (result ? "True" : "False") << std::endl;
+  if (set.count(key - node->val))
+    return true;
 
-  return 0;
+  set.insert(node->val);
+
+  return getTarget(node->left, set, key) || getTarget(node->right, set, key);
+}
+
+bool findTarget(TreeNode *root, int k) {
+
+  std::unordered_set<int> set;
+
+  return getTarget(root, set, k);
 }
