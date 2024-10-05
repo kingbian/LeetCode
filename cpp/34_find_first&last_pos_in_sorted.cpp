@@ -1,6 +1,11 @@
 #include <iostream>
 #include <vector>
 
+/** solved using binary search implementation
+ *
+ * took 8ms
+ * time complexity: O (log(N))
+ */
 using namespace std;
 
 vector<int> searchRange(vector<int>& nums, int target) {
